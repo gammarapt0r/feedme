@@ -128,6 +128,7 @@ function geolocate(timezone, cityPrecision, objectVar) {
 	var geocoder;
 	var map;
 	var markerlist = [];
+	
 	function initialize() {
 		geocoder = new google.maps.Geocoder();
 		var latlng = new google.maps.LatLng(53.5333, -113.5000);
@@ -139,27 +140,24 @@ function geolocate(timezone, cityPrecision, objectVar) {
 			
 			markerlist[i][0].setMap(map);
 			alert(markerlist[i][0].getPosition());
-			google.maps.event.addListener(markerlist[i][0], 'click', 
-			function() {
-				alert('click' + i);
-				var infowindow = new google.maps.InfoWindow();
-				infowindow.setContent(markerlist[i][1]);
-				infowindow.open(map,markerList[i][0]);
-			}
 			
-			);
-			infowindow.open(map,markerList[i][0])
 			
-		
+			
 		}
 	}
 	function codeAddress() {
 		var address = document.getElementById('address').value;
 		var info = document.getElementById('info').value;
 		geocoder.geocode( { 'address': address}, function(results, status) {
-  
 		if (status == google.maps.GeocoderStatus.OK) {
-			markerlist.push([(new google.maps.Marker({map: map, position: results[0].geometry.location})),info]);
+			
+			markerlist.push([(new google.maps.Marker({map: map, position: results[0].geometry.location, title: address})),info,new google.maps.InfoWindow({content: info})]);
+			var u = markerlist.length-1;
+			google.maps.event.addListener(markerlist[u][0], 'click', 
+			function() {
+				alert(info);
+				markerlist[u][2].open(map,markerlist[u][0]);
+			});
 			displayAddressList();
 		} else {
 			alert('Geocode was not successful for the following reason: ' + status);
