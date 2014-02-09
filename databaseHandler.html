@@ -1,36 +1,59 @@
+<!DOCTYPE html>
 <html>
-	<head>
-		<title>Database Handler Backend</title>
-		<script type="text/javascript" src="jquery.js"></script>
-		<script>
-			$(document).ready(function(){
-	$.ajax({
-		type: "GET",
-		url: "db.xml",
-		dataType: "xml",
-		success: function(xml) {
-			$(xml).find('marker').each(function(){
-				var id = $(this).attr('id');
-				var title = $(this).find('title').text();
-				var url = $(this).find('url').text();
-				$('<div class="items" id="link_'+id+'"></div>').html('<a href="'+url+'">'+title+'</a>').appendTo('#page-wrap');
-				$(this).find('desc').each(function(){
-					var brief = $(this).find('brief').text();
-					var long = $(this).find('long').text();
-					$('<div class="brief"></div>').html(brief).appendTo('#link_'+id);
-					$('<div class="long"></div>').html(long).appendTo('#link_'+id);
-				});
-			});
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Geocoder</title>
+    <style>
+      html, body, #display {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+      #panel {
+        position: absolute;
+        top: 5px;
+        left: 50%;
+        margin-left: -180px;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+      }
+    </style>
+   
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVIv0OBgDPfJ2bN5GqE13HaA7u1d4j3_o&sensor=true"></script>
+    
+<script>
+	var geocoder;
+	function codeAddress() {
+		
+		geocoder = new google.maps.Geocoder();
+		
+		var address = document.getElementById('address').value;
+		var info = document.getElementById('info').value;
+		geocoder.geocode( { 'address': address}, function(results, status) {
+		if (status == google.maps.GeocoderStatus.OK) {
+			var mydisplayarea = document.getElementById('display');
+			mydisplayarea.innerHTML += results[0].geometry.location;
+		} else {
+			alert('Geocode was not successful for the following reason: ' + status);
 		}
-	});
-});
-		</script>
-	</head>
-	<body>
-		<div id="panel">
-			<input id="address" onfocus="if(this.value == 'Enter address here') { this.value = ''; }" type="textbox" value="Enter address here">
-			<input id="info" onfocus="if(this.value == 'Enter info here') { this.value = ''; }" type="textbox" value="Enter info here">
-			<input type="button" value="Add" onclick="codeAddress()">
-		</div>
-	</body>
+	
+  });
+}
+
+
+
+    </script>
+  </head>
+  <body>
+    <div id="panel">
+      <input id="address" onfocus="if(this.value == 'Enter address here') { this.value = ''; }" type="textbox" value="Enter address here">
+	  <input id="info" onfocus="if(this.value == 'Enter info here') { this.value = ''; }" type="textbox" value="Enter info here">
+      <input type="button" value="Display" onclick="codeAddress()">
+    </div>
+    <div id="display"></div>
+  </body>
 </html>
