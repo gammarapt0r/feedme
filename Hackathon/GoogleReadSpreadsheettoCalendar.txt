@@ -1,0 +1,67 @@
+function createEventsFinalIthink(calendarId) {
+  var cal = CalendarApp.getCalendarById('3v2mr5g6mr65nnha661as0eirk@group.calendar.google.com');
+  
+  var sheet = SpreadsheetApp.getActiveSheet();
+  var rows = sheet.getDataRange();
+  var numRows = rows.getNumRows() - 1;
+  {
+  
+   var values = sheet.getRange(2, 1, 1, 20).getValues();
+   Logger.log(values[0][0]);
+    
+    var title = ('$' + values[0][7] + ' Dollar ' + values[0][6] + ' at ' + values[0][4] + '!');
+    //var desc = 'Inserted by user:' + ; */
+    var loc = values[0][5];
+    var recurrence = CalendarApp.newRecurrence().addWeeklyRule().times(1); //Only adds for one year.
+ 
+    if (values[0][9]=1)
+    {/*Monday*/
+      var start = new Date("February 3, 2014 " + values[0][17]);
+      var end = new Date("February 3, 2014 " + values[0][18]);
+      var series = cal.createEventSeries(title, start, end, recurrence, {
+      /*description : desc,*/location : loc      })
+    }
+    if (values[0][10]=1)
+    {/*Tday*/
+      var start = new Date("February 4, 2014 " + values[0][17]);
+      var end = new Date("February 4, 2014 " + values[0][18]);
+      var series = cal.createEventSeries(title, start, end, recurrence, {
+      /*description : desc,*/location : loc      })
+    }
+    if (values[0][11]=1)
+    {/*Wday*/
+      var start = new Date("February 5, 2014 " + values[0][17]);
+      var end = new Date("February 5, 2014 " + values[0][18]);
+      var series = cal.createEventSeries(title, start, end, recurrence, {
+      /*description : desc,*/location : loc      })
+    }
+    if (values[0][12]=1)
+    {/*Rday*/
+      var start = new Date("February 6, 2014 " + values[0][17]);
+      var end = new Date("February 6, 2014 " + values[0][18]);
+      var series = cal.createEventSeries(title, start, end, recurrence, {
+      /*description : desc,*/location : loc      })
+    }
+    if (values[0][13]=1)
+    {/*Fday*/
+      var start = new Date("February 7, 2014 " + values[0][17]);
+      var end = new Date("February 7, 2014 " + values[0][18]);
+      var series = cal.createEventSeries(title, start, end, recurrence, {
+      /*description : desc,*/location : loc      })
+    }
+    if (values[0][14]=1)
+    {/*Satday*/
+      var start = new Date("February 8, 2014 " + values[0][17]);
+      var end = new Date("February 8, 2014 " + values[0][18]);
+      var series = cal.createEventSeries(title, start, end, recurrence, {
+      /*description : desc,*/location : loc      })
+    }
+    if (values[0][15]=1)
+    {/*Sunday*/
+      var start = new Date("February 8, 2014 " + values[0][17]);
+      var end = new Date("February 8, 2014 " + values[0][18]);
+      var series = cal.createEventSeries(title, start, end, recurrence, {
+      /*description : desc,*/location : loc      })
+    }
+  }
+ };
