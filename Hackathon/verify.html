@@ -2,7 +2,7 @@
 
 <html>
 <head>
-	<title>About</title>
+<title>View Deals</title>
 	<style = "text/css">
 		body {background-image:url("bg.jpg");}
 		
@@ -88,35 +88,39 @@
 			height:30px;
 			background-image: url("contactsdark.png");
 		}
-		
+		#txtdrop{position:absolute;top:300px;left:200px;height:200px;width:950px;border:2px grey solid;background-color:white;}
 		#abouttxt{position:absolute;top:310px;left:220px;height:600px;width:910px;}
-		#txtdrop{position:absolute;top:300px;left:200px;height:250px;width:950px;border:2px grey solid;background-color:white;}
+		h3 {font-family:"Vernanda",Arial,sans-serif;}
+		form {font-family:"Vernanda",Arial,sans-serif;}
+		
 	</style>
-
-
 </head>
 <body>
- 
-	<script>
-
-
-	</script>
-	
 	<div id="logo"><img src="logo.png" height="180"/></div>
 	<div id="navbar"><img src="navbar.png" height="30" width="1500"/></div>
-	<div id="aboutdiv"></div>
+	<a href="about.html"><div id="aboutdiv"></div></a>
 	<a href="index.html"><div id="homediv"></div></a>
-	<a href="addadeal.html"><div id="addadealdiv"></div></a>
+	<div id="addadealdiv"></div>
 	<a href="viewdeals.html"><div id="viewdealsdiv"></div></a>
 	<a href="contacts.html"><div id="contactsdiv"></div></a>
 	<div id="txtdrop"></div>
-	
 	<div id="abouttxt">
-		<h1>About</h1>
-		<p>Our service was born out of a mutual desire to find the only the absolute best deals on great food. Started in 2014 as a conceptual project at a large local Hackathon event, our website and database has grown into Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-Coming soon: Filters for types of food.
-Follow us on Twitter at @feedme</p>
+		<h3>You have requested admin access.</h3>
+		<form name="passcheck" action="suggested_deals.asp" method="get">
+			Enter Password: <input type="text" name="firstname"><br>
+			
+		</form>
+		<a href='https://docs.google.com/a/ualberta.ca/forms/d/1H4ylfphssXd8zj7LLTZQJYKf80dGiwt7snwb2XPXgO8/viewform'><button>Submit</button></a>
 	</div>
 	
+	<script>
+		function denied(){
+			var temp = document.getElementById('abouttxt');
+			temp.innerHTML = "<h2>Access denied.</h2>";
+		}
+		function verifypass(){
+			window.location='https://docs.google.com/a/ualberta.ca/forms/d/1H4ylfphssXd8zj7LLTZQJYKf80dGiwt7snwb2XPXgO8/viewform';
+		}
+	</script>
 </body>
 </html>
