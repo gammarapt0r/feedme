@@ -127,24 +127,31 @@ function geolocate(timezone, cityPrecision, objectVar) {
 <script>
 	var geocoder;
 	var map;
-	
+	var markerlist = [];
 	function initialize() {
 		geocoder = new google.maps.Geocoder();
 		var latlng = new google.maps.LatLng(53.5333, -113.5000);
 		var mapOptions = {zoom: 11, center: latlng}
 		map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 	}
-
+	function displayAddressList() {
+		 for (i = 0; i < markerlist.length; i++) {  
+			markerlist[i].setMap(map);
+			alert(markerlist[i].getPosition());
+		}
+	}
 	function codeAddress() {
 		var address = document.getElementById('address').value;
+		var info = document.getElementById('info').value;
 		geocoder.geocode( { 'address': address}, function(results, status) {
   
 		if (status == google.maps.GeocoderStatus.OK) {
-		map.setCenter(results[0].geometry.location);
-		var marker = new google.maps.Marker({map: map, position: results[0].geometry.location});
+		markerlist.push(new google.maps.Marker({map: map, position: results[0].geometry.location}));
+		displayAddressList();
     } else {
       alert('Geocode was not successful for the following reason: ' + status);
     }
+	
   });
 }
 
@@ -155,6 +162,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
   <body>
     <div id="panel">
       <input id="address" onfocus="if(this.value == 'Enter address here') { this.value = ''; }" type="textbox" value="Enter address here">
+	  <input id="info" onfocus="if(this.value == 'Enter info here') { this.value = ''; }" type="textbox" value="Enter info here">
       <input type="button" value="Display" onclick="codeAddress()">
     </div>
     <div id="map-canvas"></div>
