@@ -2,19 +2,120 @@
 
 <html>
 <head>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+	<title>Feed Me Now</title>
 	<style type = "text/css">
+		#map-canvas{position:absolute;top:-319px;left:655px;border:green dashed 2px;height:450px;width:500px;}
+		#panel {
+			position: absolute;
+			top: 150px;
+			left: 1053px;
+			margin-left: -180px;
+			z-index: 5;
+			background-color: #fff;
+			padding: 5px;
+			border: 1px solid #999;
+		}
+		#overlay {
+			visibility: visible;
+			position: absolute;
+			top: 250px;
+			left: 780px;
+			width: 505px;
+			height: 457px;
+			background-color: #000;
+			filter:alpha(opacity=50);
+			-moz-opacity:0.5;
+			-khtml-opacity: 0.5;
+			opacity: 0.5;
+			z-index: 10000;
+		}
 		body {background-image:url("bg.jpg");}
 		
 		<!--#pix {position:absolute;left:1350px;height:700px;width:1px;border:dashed black 3px;}-->
 		#logo {position:absolute;top:10px;left:255px;}
-		#topbanner {position:absolute;top:100px;left:500px;background-color:red;width:500px;height:50;}
-		#topbannerborder {position:absolute;top:102px;left:502px;background-color:red;}
 		#navbar {position:absolute;left:0px;top:200px;}
-		#aboutdiv {position:absolute;top:200px;left:466px;}
-		#homediv {position:absolute;top:200px;left:327px;}
-		#addadealdiv {position:absolute;top:200px;left:605px;}
-		#changelocationdiv {position:absolute;top:200px;left:755px;}
-		#contactsdiv {position:absolute;top:200px;left:894px;}
+		#aboutdiv {
+			position:absolute;
+			top:200px;
+			left:466px;
+			width:139px;
+			height:30px;
+			background-image: url("aboutfull.png");
+		}
+		#aboutdiv:hover {
+		position:absolute;
+			top:200px;
+			left:466px;
+			width:139px;
+			height:30px;
+			background-image: url("aboutdark.png");
+		}
+		#homediv {
+			position:absolute;
+			top:200px;
+			left:327px;
+			width:139px;
+			height:30px;
+			background-image: url("homefull.png");
+		}
+		#homediv:hover {
+			position:absolute;
+			top:200px;
+			left:327px;
+			width:139px;
+			height:30px;
+			background-image: url("homedark.png");
+		}
+		#addadealdiv {
+			position:absolute;
+			top:200px;
+			left:605px;
+			width:139px;
+			height:30px;
+			background-image: url("addadealfull.png");
+		}
+		#addadealdiv:hover {
+			position:absolute;
+			top:200px;
+			left:605px;
+			width:139px;
+			height:30px;
+			background-image: url("addadealdark.png");
+		}
+		#changelocationdiv {
+			position:absolute;
+			top:200px;
+			left:755px;
+			width:139px;
+			height:30px;
+			background-image: url("changelocationfull.png");
+		}
+		#changelocationdiv:hover {
+			position:absolute;
+			top:200px;
+			left:755px;
+			width:139px;
+			height:30px;
+			background-image: url("changelocationdark.png");
+		}
+		#contactsdiv {
+			position:absolute;
+			top:200px;
+			left:894px;
+			width:139px;
+			height:30px;
+			background-image: url("contactsfull.png");
+		}
+		#contactsdiv:hover {
+		position:absolute;
+			top:200px;
+			left:894px;
+			width:139px;
+			height:30px;
+			background-image: url("contactsdark.png");
+		}
 		
 		#scrollback {position:absolute;top:250px;left:85px;height:600px;width:670px;border:grey solid 2px;background-color:white;}
 		#imgcenter {position:absolute;top:275px;left:345px;border:1px grey solid}
@@ -29,185 +130,274 @@
 		h1 {font-family:"Vernanda",Arial,sans-serif;}
 		p {text-indent:50px;font-family:"Vernanda",Arial,sans-serif;}
 		
-		#mapdiv {position:absolute;top:250px;left:780px;border:green dashed 2px;height:450px;width:500px;}
-		
 	</style>
 
 
 </head>
 <body>
-	
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVIv0OBgDPfJ2bN5GqE13HaA7u1d4j3_o&sensor=true"></script>
+	<script src="jquery.js"></script>   
 	<script>
-		var images = new Array("img-2","img-1","img0","img1","img2");
+		function overlaystop() {
+			 var d = document.getElementById('overlay');
+			 d.parentNode.removeChild(d);
+			
+		}
+		var geocoder;
+		var map;
+		var markerlist = [];
+		var addressLoad = [[53.5223139, -113.6224307, "West Edmonton Mall"],[53.5234543, -113.52599509999999, "U of A"]];
+		function initialize() {
+			geocoder = new google.maps.Geocoder();
+			var latlng = new google.maps.LatLng(53.5333, -113.5000);
+			var mapOptions = {zoom: 11, center: latlng}
+			map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+			<!--for (i = 0; i < addressLoad.length; i++) {  
+			//	
+			//	markerlist.push([(new google.maps.Marker({map: map, position: new google.maps.LatLng(addressLoad[i][0],addressLoad[i][1]), title: addressLoad[i][2]})),addressLoad[i][2],new google.maps.InfoWindow({content: addressLoad[i][2]})]);
+			//	var u = markerlist.length-1;
+			//	alert(markerlist[i][1]);
+			//	google.maps.event.addListener(markerlist[u][0], 'click', 
+			//	function() {
+			//		alert(markerlist[u][1]);
+			//		markerlist[u][2].open(map,markerlist[u][0]);
+			//	});
+			//	
+			//}
+			-->
+			
+			//for (u = 0; u < markerlist.length; u++) {  
+			//	alert(u);
+			//	google.maps.event.addListener(markerlist[u][0], 'click', 
+			//	function() {
+			//		alert(markerlist[u][1]);
+			//		markerlist[u][2].open(map,markerlist[u][0]);
+			//	});
+			//}
+			//displayAddressList()
+			
+		}
+		function displayAddressList() {
+			 for (i = 0; i < markerlist.length; i++) {  
+				
+				markerlist[i][0].setMap(map);
+				//alert(markerlist[i][0].getPosition());
+				
+				
+				
+			}
+		}
+		function codeAddress() {
+			
+			var address = document.getElementById('address').value;
+			var info = document.getElementById('info').value;
+			geocoder.geocode( { 'address': address}, function(results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+				
+				markerlist.push([(new google.maps.Marker({map: map, position: results[0].geometry.location, title: address})),info,new google.maps.InfoWindow({content: info})]);
+				var u = markerlist.length-1;
+				google.maps.event.addListener(markerlist[u][0], 'click', 
+				function() {
+					//alert(info);
+					markerlist[u][2].open(map,markerlist[u][0]);
+				});
+				displayAddressList();
+				
+			} else {
+				alert('Geocode was not successful for the following reason: ' + status);
+			}
+			overlaystop();
+	  });
+	}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+	function overlaystart() {
+		var overlay = jQuery('<div id="overlay"><input id="address" onfocus="if(this.value == "Enter address here") { this.value = ""; }" type="textbox" value="Enter address here"> <input id="info" onfocus="if(this.value == "Enter info here") { this.value = ""; }" type="textbox" value="Enter info here"><input type="button" value="Display" onclick="codeAddress()"></div>');
+		overlay.appendTo(document.body)
+	}
+	
+    </script>
+	<script>
+		var images = new Array("img-3","img-2","img-1","img0","img1","img2","img3");
 		var index=0;var newstr="";
+		
+		var descriptions = new Array(
+			"<h1>Sunday, Feb 8</h1><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec feugiat, nibh eu tempor vulputate, nulla urna pharetra massa, et euismod leo odio eu orci. Vivamus ut porta risus, et malesuada tortor. Donec volutpat dui risus, vel facilisis ipsum dapibus vitae. Proin nec odio sed eros consequat viverra at non massa. Nullam non porttitor arcu. Maecenas est risus, cursus eu tristique eget, pretium id dolor. Nullam imperdiet porta tempor. Nullam non orci imperdiet, commodo lacus eu, imperdiet arcu. Morbi luctus tortor vitae massa hendrerit interdum. Pellentesque vulputate neque magna, et sodales lectus condimentum sit amet. Donec justo ante, ornare vitae porttitor quis, placerat id risus. Etiam eget iaculis ligula. Nam eleifend fermentum commodo.</p>",
+			"<h1>Monday, Feb 9</h1><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt quam vel nunc lobortis, at bibendum odio aliquam. Phasellus feugiat malesuada erat. Proin consequat risus lacus, at ornare sem lacinia eget. Sed fermentum purus massa, vitae malesuada lectus feugiat non. Nam vulputate, augue et mattis mollis, est neque semper felis, quis mollis sem enim euismod est. Pellentesque fermentum ac lacus eu condimentum. Pellentesque sit amet neque vehicula, adipiscing tortor a, condimentum lacus. Suspendisse commodo nulla eu ante eleifend pulvinar. Curabitur ut vulputate ante. Vestibulum tempor risus sit amet placerat placerat. In feugiat vel turpis ac tempor. Donec sit amet elit non ipsum gravida tristique ut vitae ipsum. Curabitur at orci at libero egestas congue.</p>",
+			"<h1>Tuesday, Feb 10</h1><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in adipiscing augue. Nullam at turpis nec leo fermentum auctor et suscipit eros. Praesent nec porttitor ipsum, id consectetur erat. Mauris at molestie nulla. Phasellus vulputate nisl felis, vitae ultricies leo tincidunt at. Suspendisse blandit ipsum metus, in adipiscing elit dictum eu. Sed varius metus velit, eget semper felis iaculis eget. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>",
+			"<h1>Wednesday, Feb 11</h1><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus massa quam, consectetur vel massa et, tincidunt mollis ante. Cras volutpat dui vestibulum justo elementum, vel tincidunt erat sodales. Quisque pellentesque aliquam auctor. Nunc accumsan hendrerit sodales. Curabitur malesuada nisi dolor, accumsan eleifend sapien dignissim elementum. Vestibulum venenatis pellentesque elit ut varius. Aliquam metus enim, aliquet quis bibendum vitae, tincidunt nec sem. Phasellus consectetur magna vel ultrices euismod. Quisque rhoncus turpis ac eros scelerisque, nec imperdiet purus varius. Aliquam vel felis fringilla, facilisis justo et, semper nibh. Suspendisse interdum vitae ante ac consectetur. Ut nec bibendum nulla. Duis sed commodo urna. Donec sit amet varius dolor. Curabitur malesuada mollis tincidunt.</p>",
+			"<h1>Thursday, Feb 12</h1><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque faucibus tristique massa, ac lobortis enim blandit ut. Nullam eu feugiat augue, quis dictum risus. Phasellus placerat ligula id magna accumsan, eget rutrum purus bibendum. Aenean blandit elit eget bibendum scelerisque. Praesent ut ornare mauris. Suspendisse rhoncus, dolor sed gravida eleifend, lectus leo pretium ipsum, a ullamcorper sem eros eget leo. Aliquam erat volutpat. In vulputate euismod turpis eget mollis. Pellentesque varius ipsum sed ipsum auctor, quis adipiscing tellus tincidunt. Curabitur lacinia congue adipiscing. Sed commodo id libero id vehicula.</p>",
+			"<h1>Friday, Feb 13</h1><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae ante sed augue imperdiet fringilla vel quis leo. Phasellus semper ipsum laoreet mattis scelerisque. Aliquam dignissim velit eget lectus fringilla, at iaculis elit tincidunt. Sed ante mauris, gravida dictum scelerisque sed, scelerisque eu eros. Etiam consequat, velit quis congue molestie, odio nibh cursus enim, quis hendrerit libero mauris vel nibh. Vivamus quis tortor eu metus accumsan vestibulum. Curabitur eget volutpat odio. Suspendisse id augue nisl. Aliquam ac tempus leo. Nulla facilisi.</p>",
+			"<h1>Saturday, Feb 14</h1><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam hendrerit faucibus mollis. Donec facilisis neque orci, ut sagittis nibh accumsan vel. Fusce ut luctus velit. Nullam pellentesque neque vitae suscipit aliquet. Maecenas eros augue, tincidunt vitae dapibus in, tempus quis arcu. Integer tincidunt sapien elit, non ultricies libero tempor non. Ut posuere sem in dapibus lacinia. Cras suscipit tempor turpis, a interdum velit facilisis blandit. Sed tempus, massa sit amet consequat interdum, lorem lectus congue ante, a porta sem lorem luctus justo. Pellentesque et mi a elit mattis pulvinar in quis enim. Integer nec dui sagittis, euismod dui id, ultricies diam. In hac habitasse platea dictumst. Proin volutpat aliquet lacinia.</p>"
+			);
+		
 		
 		function switchRight(){
 			//CENTER
 			var temp=document.getElementById('imgcenter');
-				if (temp.innerHTML.indexOf("img-2")>-1){index=0}
-				else if (temp.innerHTML.indexOf("img-1")>-1){index=1}
-				else if (temp.innerHTML.indexOf("img0")>-1){index=2}
-				else if (temp.innerHTML.indexOf("img1")>-1){index=3}
-				else {index=4}
+				if (temp.innerHTML.indexOf("img-3")>-1){index=0}
+				else if (temp.innerHTML.indexOf("img-2")>-1){index=1}
+				else if (temp.innerHTML.indexOf("img-1")>-1){index=2}
+				else if (temp.innerHTML.indexOf("img0")>-1){index=3}
+				else if (temp.innerHTML.indexOf("img1")>-1){index=4}
+				else if (temp.innerHTML.indexOf("img2")>-1){index=5}
+				else {index=6}
 				index = index+1;
-				if(index==5){index=0}
+				if(index==7){index=0}
 				newstr="<img src='"+images[index]+".png' height='220' width='150'/>";
 				temp.innerHTML=newstr;
+				temptxt=document.getElementById('text1');
+				temptxt.innerHTML=descriptions[index];
 			//RIGHT ONE
 			var temp=document.getElementById('imgr1');
-				if (temp.innerHTML.indexOf("img-2")>-1){index=0}
-				else if (temp.innerHTML.indexOf("img-1")>-1){index=1}
-				else if (temp.innerHTML.indexOf("img0")>-1){index=2}
-				else if (temp.innerHTML.indexOf("img1")>-1){index=3}
-				else {index=4}
+				if (temp.innerHTML.indexOf("img-3")>-1){index=0}
+				else if (temp.innerHTML.indexOf("img-2")>-1){index=1}
+				else if (temp.innerHTML.indexOf("img-1")>-1){index=2}
+				else if (temp.innerHTML.indexOf("img0")>-1){index=3}
+				else if (temp.innerHTML.indexOf("img1")>-1){index=4}
+				else if (temp.innerHTML.indexOf("img2")>-1){index=5}
+				else {index=6}
 				index = index+1;
-				if(index==5){index=0}
+				if(index==7){index=0}
 				newstr="<img src='"+images[index]+".png' height='198' width='135'/>";
 				temp.innerHTML=newstr;
+				temptxt=document.getElementById('text1');
+				temptxt.innerHTML=descriptions[index];
 			//LEFT ONE
 			var temp=document.getElementById('imgl1');
-				if (temp.innerHTML.indexOf("img-2")>-1){index=0}
-				else if (temp.innerHTML.indexOf("img-1")>-1){index=1}
-				else if (temp.innerHTML.indexOf("img0")>-1){index=2}
-				else if (temp.innerHTML.indexOf("img1")>-1){index=3}
-				else {index=4}
+				if (temp.innerHTML.indexOf("img-3")>-1){index=0}
+				else if (temp.innerHTML.indexOf("img-2")>-1){index=1}
+				else if (temp.innerHTML.indexOf("img-1")>-1){index=2}
+				else if (temp.innerHTML.indexOf("img0")>-1){index=3}
+				else if (temp.innerHTML.indexOf("img1")>-1){index=4}
+				else if (temp.innerHTML.indexOf("img2")>-1){index=5}
+				else {index=6}
 				index = index+1;
-				if(index==5){index=0}
+				if(index==7){index=0}
 				newstr="<img src='"+images[index]+".png' height='198' width='135'/>";
 				temp.innerHTML=newstr;
+				temptxt=document.getElementById('text1');
+				temptxt.innerHTML=descriptions[index];
 			//RIGHT TWO
 			var temp=document.getElementById('imgr2');
-				if (temp.innerHTML.indexOf("img-2")>-1){index=0}
-				else if (temp.innerHTML.indexOf("img-1")>-1){index=1}
-				else if (temp.innerHTML.indexOf("img0")>-1){index=2}
-				else if (temp.innerHTML.indexOf("img1")>-1){index=3}
-				else {index=4}
+				if (temp.innerHTML.indexOf("img-3")>-1){index=0}
+				else if (temp.innerHTML.indexOf("img-2")>-1){index=1}
+				else if (temp.innerHTML.indexOf("img-1")>-1){index=2}
+				else if (temp.innerHTML.indexOf("img0")>-1){index=3}
+				else if (temp.innerHTML.indexOf("img1")>-1){index=4}
+				else if (temp.innerHTML.indexOf("img2")>-1){index=5}
+				else {index=6}
 				index = index+1;
-				if(index==5){index=0}
+				if(index==7){index=0}
 				newstr="<img src='"+images[index]+".png' height='158' width='108'/>";
 				temp.innerHTML=newstr;
+				temptxt=document.getElementById('text1');
+				temptxt.innerHTML=descriptions[index];
 			//LEFT TWO
 			var temp=document.getElementById('imgl2');
-				if (temp.innerHTML.indexOf("img-2")>-1){index=0}
-				else if (temp.innerHTML.indexOf("img-1")>-1){index=1}
-				else if (temp.innerHTML.indexOf("img0")>-1){index=2}
-				else if (temp.innerHTML.indexOf("img1")>-1){index=3}
-				else {index=4}
+				if (temp.innerHTML.indexOf("img-3")>-1){index=0}
+				else if (temp.innerHTML.indexOf("img-2")>-1){index=1}
+				else if (temp.innerHTML.indexOf("img-1")>-1){index=2}
+				else if (temp.innerHTML.indexOf("img0")>-1){index=3}
+				else if (temp.innerHTML.indexOf("img1")>-1){index=4}
+				else if (temp.innerHTML.indexOf("img2")>-1){index=5}
+				else {index=6}
 				index = index+1;
-				if(index==5){index=0}
+				if(index==7){index=0}
 				newstr="<img src='"+images[index]+".png' height='158' width='108'/>";
 				temp.innerHTML=newstr;
+				temptxt=document.getElementById('text1');
+				temptxt.innerHTML=descriptions[index];
 		}
 		function switchLeft(){
 						//CENTER
 			var temp=document.getElementById('imgcenter');
-				if (temp.innerHTML.indexOf("img-2")>-1){index=0}
-				else if (temp.innerHTML.indexOf("img-1")>-1){index=1}
-				else if (temp.innerHTML.indexOf("img0")>-1){index=2}
-				else if (temp.innerHTML.indexOf("img1")>-1){index=3}
-				else {index=4}
+				if (temp.innerHTML.indexOf("img-3")>-1){index=0}
+				else if (temp.innerHTML.indexOf("img-2")>-1){index=1}
+				else if (temp.innerHTML.indexOf("img-1")>-1){index=2}
+				else if (temp.innerHTML.indexOf("img0")>-1){index=3}
+				else if (temp.innerHTML.indexOf("img1")>-1){index=4}
+				else if (temp.innerHTML.indexOf("img2")>-1){index=5}
+				else {index=6}
 				index = index-1;
-				if(index==-1){index=4}
+				if(index==-1){index=6}
 				newstr="<img src='"+images[index]+".png' height='220' width='150'/>";
 				temp.innerHTML=newstr;
+				temptxt=document.getElementById('text1');
+				temptxt.innerHTML=descriptions[index];
 			//RIGHT ONE
 			var temp=document.getElementById('imgr1');
-				if (temp.innerHTML.indexOf("img-2")>-1){index=0}
-				else if (temp.innerHTML.indexOf("img-1")>-1){index=1}
-				else if (temp.innerHTML.indexOf("img0")>-1){index=2}
-				else if (temp.innerHTML.indexOf("img1")>-1){index=3}
-				else {index=4}
+				if (temp.innerHTML.indexOf("img-3")>-1){index=0}
+				else if (temp.innerHTML.indexOf("img-2")>-1){index=1}
+				else if (temp.innerHTML.indexOf("img-1")>-1){index=2}
+				else if (temp.innerHTML.indexOf("img0")>-1){index=3}
+				else if (temp.innerHTML.indexOf("img1")>-1){index=4}
+				else if (temp.innerHTML.indexOf("img2")>-1){index=5}
+				else {index=6}
 				index = index-1;
-				if(index==-1){index=4}
+				if(index==-1){index=6}
 				newstr="<img src='"+images[index]+".png' height='198' width='135'/>";
 				temp.innerHTML=newstr;
+				temptxt=document.getElementById('text1');
+				temptxt.innerHTML=descriptions[index];
 			//LEFT ONE
 			var temp=document.getElementById('imgl1');
-				if (temp.innerHTML.indexOf("img-2")>-1){index=0}
-				else if (temp.innerHTML.indexOf("img-1")>-1){index=1}
-				else if (temp.innerHTML.indexOf("img0")>-1){index=2}
-				else if (temp.innerHTML.indexOf("img1")>-1){index=3}
-				else {index=4}
+				if (temp.innerHTML.indexOf("img-3")>-1){index=0}
+				else if (temp.innerHTML.indexOf("img-2")>-1){index=1}
+				else if (temp.innerHTML.indexOf("img-1")>-1){index=2}
+				else if (temp.innerHTML.indexOf("img0")>-1){index=3}
+				else if (temp.innerHTML.indexOf("img1")>-1){index=4}
+				else if (temp.innerHTML.indexOf("img2")>-1){index=5}
+				else {index=6}
 				index = index-1;
-				if(index==-1){index=4}
+				if(index==-1){index=6}
 				newstr="<img src='"+images[index]+".png' height='198' width='135'/>";
 				temp.innerHTML=newstr;
+				temptxt=document.getElementById('text1');
+				temptxt.innerHTML=descriptions[index];
 			//RIGHT TWO
 			var temp=document.getElementById('imgr2');
-				if (temp.innerHTML.indexOf("img-2")>-1){index=0}
-				else if (temp.innerHTML.indexOf("img-1")>-1){index=1}
-				else if (temp.innerHTML.indexOf("img0")>-1){index=2}
-				else if (temp.innerHTML.indexOf("img1")>-1){index=3}
-				else {index=4}
+				if (temp.innerHTML.indexOf("img-3")>-1){index=0}
+				else if (temp.innerHTML.indexOf("img-2")>-1){index=1}
+				else if (temp.innerHTML.indexOf("img-1")>-1){index=2}
+				else if (temp.innerHTML.indexOf("img0")>-1){index=3}
+				else if (temp.innerHTML.indexOf("img1")>-1){index=4}
+				else if (temp.innerHTML.indexOf("img2")>-1){index=5}
+				else {index=6}
 				index = index-1;
-				if(index==-1){index=4}
+				if(index==-1){index=6}
 				newstr="<img src='"+images[index]+".png' height='158' width='108'/>";
 				temp.innerHTML=newstr;
+				temptxt=document.getElementById('text1');
+				temptxt.innerHTML=descriptions[index];
 			//LEFT TWO
 			var temp=document.getElementById('imgl2');
-				if (temp.innerHTML.indexOf("img-2")>-1){index=0}
-				else if (temp.innerHTML.indexOf("img-1")>-1){index=1}
-				else if (temp.innerHTML.indexOf("img0")>-1){index=2}
-				else if (temp.innerHTML.indexOf("img1")>-1){index=3}
-				else {index=4}
+				if (temp.innerHTML.indexOf("img-3")>-1){index=0}
+				else if (temp.innerHTML.indexOf("img-2")>-1){index=1}
+				else if (temp.innerHTML.indexOf("img-1")>-1){index=2}
+				else if (temp.innerHTML.indexOf("img0")>-1){index=3}
+				else if (temp.innerHTML.indexOf("img1")>-1){index=4}
+				else if (temp.innerHTML.indexOf("img2")>-1){index=5}
+				else {index=6}
 				index = index-1;
-				if(index==-1){index=4}
+				if(index==-1){index=6}
 				newstr="<img src='"+images[index]+".png' height='158' width='108'/>";
 				temp.innerHTML=newstr;
-		}
-		function aboutdarken(){
-			var temp = document.getElementById('aboutdiv');
-			temp.innerHTML="<img src='aboutdark.png' height='30'/>";
-		}
-		function aboutlighten(){
-			var temp = document.getElementById('aboutdiv');
-			temp.innerHTML="<img src='aboutfull.png' height='30'/>";
-		}
-		function homedarken(){
-			var temp = document.getElementById('homediv');
-			temp.innerHTML="<img src='homedark.png' height='30'/>";
-		}
-		function homelighten(){
-			var temp = document.getElementById('homediv');
-			temp.innerHTML="<img src='homefull.png' height='30'/>";
-		}function addadealdarken(){
-			var temp = document.getElementById('addadealdiv');
-			temp.innerHTML="<img src='addadealdark.png' height='30'/>";
-		}
-		function addadeallighten(){
-			var temp = document.getElementById('addadealdiv');
-			temp.innerHTML="<img src='addadealfull.png' height='30'/>";
-		}
-		function changelocationdarken(){
-			var temp = document.getElementById('changelocationdiv');
-			temp.innerHTML="<img src='changelocationdark.png' height='30'/>";
-		}
-		function changelocationlighten(){
-			var temp = document.getElementById('changelocationdiv');
-			temp.innerHTML="<img src='changelocationfull.png' height='30'/>";
-		}
-		function contactsdarken(){
-			var temp = document.getElementById('contactsdiv');
-			temp.innerHTML="<img src='contactsdark.png' height='30'/>";
-		}
-		function contactslighten(){
-			var temp = document.getElementById('contactsdiv');
-			temp.innerHTML="<img src='contactsfull.png' height='30'/>";
+				temptxt=document.getElementById('text1');
+				temptxt.innerHTML=descriptions[index];
 		}
 	</script>
 	
 	<!--<div id="pix"></div>-->
-	<div id="topbanner"></div>
 
 	<div id="logo"><img src="logo.png" height="180"/></div>
 	<div id="navbar"><img src="navbar.png" height="30" width="1500"/></div>
-	<div id="aboutdiv" onMouseOver="aboutdarken()" onMouseOut="aboutlighten()"><img src='aboutfull.png' height='30'/></div>
-	<div id="homediv" onMouseOver="homedarken()" onMouseOut="homelighten()"><img src='homefull.png' height='30'/></div>
-	<div id="addadealdiv" onMouseOver="addadealdarken()" onMouseOut="addadeallighten()"><img src='addadealfull.png' height='30'/></div>
-	<div id="changelocationdiv" onMouseOver="changelocationdarken()" onMouseOut="changelocationlighten()"><img src='changelocationfull.png' height='30'/></div>
-	<div id="contactsdiv" onMouseOver="contactsdarken()" onMouseOut="contactslighten()"><img src='contactsfull.png' height='30'/></div>
+	<a href="about.html"><div id="aboutdiv"></div></a>
+	<div id="homediv"></div>
+	<div id="addadealdiv"></div>
+	<div id="changelocationdiv"></div>
+	<a href="contacts.html"><div id="contactsdiv"></div></a>
 	
-	<div id="mapdiv"></div>
 	<div id="scrollback"></div>
 	<div id="imgr2"><img src="img2.png" height="158" width="108"/></div>
 	<div id="imgl2"><img src="img-2.png" height="158" width="108"/></div>
@@ -215,21 +405,19 @@
 	<div id="imgl1"><img src="img-1.png" height="198" width="135"/></div>
 	<div id="imgcenter"><img src="img0.png" height="220" width="150"/></div>
 	<div id="text1">
-		<h1>Title blah blah</h1>
-		<p>text text text text text text text text text text text text text text text text text text text text 
-		text text text text text text text text text text text text text text text text text text text text text 
-		text text text text text text text text text text text text text text text text text text text text text 
-		text text text text text text text text text text text text text text text text text text text text 
-		text text text text text text text text text text text text text text text text text text text text text 
-		text text text text text text text text text text text text text text text text text text text text text 
-		text text text text text text text text text text text text text text text text text text text text</p>
+	
+	<div id="panel">
+		<input type="button" value="Submit" onclick="overlaystart()">
+	</div>
+    <div id="map-canvas"></div>
+	
+		<h1>Sunday, Feb 8</h1><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec feugiat, nibh eu tempor vulputate, nulla urna pharetra massa, et euismod leo odio eu orci. Vivamus ut porta risus, et malesuada tortor. Donec volutpat dui risus, vel facilisis ipsum dapibus vitae. Proin nec odio sed eros consequat viverra at non massa. Nullam non porttitor arcu. Maecenas est risus, cursus eu tristique eget, pretium id dolor. Nullam imperdiet porta tempor. Nullam non orci imperdiet, commodo lacus eu, imperdiet arcu. Morbi luctus tortor vitae massa hendrerit interdum. Pellentesque vulputate neque magna, et sodales lectus condimentum sit amet. Donec justo ante, ornare vitae porttitor quis, placerat id risus. Etiam eget iaculis ligula. Nam eleifend fermentum commodo.</p>
 	
 	</div>
 	
 	
 	<div id="rarr" onclick="switchRight()"><img src="rightarr.png" height="30" width="40" onClick=""></div>
 	<div id="larr" onclick="switchLeft()"><img src="leftarr.png" height="30" width="40" onClick=""></div>
-	
 	
 </body>
 </html>
