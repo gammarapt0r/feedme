@@ -48,12 +48,34 @@
 	var geocoder;
 	var map;
 	var markerlist = [];
-	
+	var addressLoad = [[53.5223139, -113.6224307, "West Edmonton Mall"],[53.5234543, -113.52599509999999, "U of A"]];
 	function initialize() {
 		geocoder = new google.maps.Geocoder();
 		var latlng = new google.maps.LatLng(53.5333, -113.5000);
 		var mapOptions = {zoom: 11, center: latlng}
 		map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+		for (i = 0; i < addressLoad.length; i++) {  
+			
+			markerlist.push([(new google.maps.Marker({map: map, position: new google.maps.LatLng(addressLoad[i][0],addressLoad[i][1]), title: addressLoad[i][2]})),addressLoad[i][2],new google.maps.InfoWindow({content: addressLoad[i][2]})]);
+			var u = markerlist.length-1;
+			alert(markerlist[i][1]);
+			google.maps.event.addListener(markerlist[u][0], 'click', 
+			function() {
+				alert(markerlist[u][1]);
+				markerlist[u][2].open(map,markerlist[u][0]);
+			});
+			
+		}
+		//for (u = 0; u < markerlist.length; u++) {  
+		//	alert(u);
+		//	google.maps.event.addListener(markerlist[u][0], 'click', 
+		//	function() {
+		//		alert(markerlist[u][1]);
+		//		markerlist[u][2].open(map,markerlist[u][0]);
+		//	});
+		//}
+		displayAddressList()
+		
 	}
 	function displayAddressList() {
 		 for (i = 0; i < markerlist.length; i++) {  
