@@ -20,111 +20,29 @@
         padding: 5px;
         border: 1px solid #999;
       }
-    </style>
-    <script type="text/javascript">
-
-function geolocate(timezone, cityPrecision, objectVar) {
- 
-  var api = (cityPrecision) ? "ip-city" : "ip-country";
-  var domain = 'api.ipinfodb.com';
-  var url = "http://" + domain + "/v3/" + api + "/?key=<your_api_key>&format=json" + "&callback=" + objectVar + ".setGeoCookie";
-  var geodata;
-  var callbackFunc;
-  var JSON = JSON || {};
- 
-  // implement JSON.stringify serialization
-  JSON.stringify = JSON.stringify || function (obj) {
-    var t = typeof (obj);
-    if (t != "object" || obj === null) {
-      // simple data type
-      if (t == "string") obj = '"'+obj+'"';
-        return String(obj);
-    } else {
-    // recurse array or object
-      var n, v, json = [], arr = (obj && obj.constructor == Array);
-      for (n in obj) {
-        v = obj[n]; t = typeof(v);
-        if (t == "string") v = '"'+v+'"';
-        else if (t == "object" && v !== null) v = JSON.stringify(v);
-        json.push((arr ? "" : '"' + n + '":') + String(v));
-      }
-      return (arr ? "[" : "{") + String(json) + (arr ? "]" : "}");
-    }
-  };
- 
-  // implement JSON.parse de-serialization
-  JSON.parse = JSON.parse || function (str) {
-    if (str === "") str = '""';
-      eval("var p=" + str + ";");
-      return p;
-  };
- 
-  //Check if cookie already exist. If not, query IPInfoDB
-  this.checkcookie = function(callback) {
-    geolocationCookie = getCookie('geolocation');
-    callbackFunc = callback;
-    if (!geolocationCookie) {
-      getGeolocation();
-    } else {
-      geodata = JSON.parse(geolocationCookie);
-      callbackFunc();
-    }
-  }
- 
-  //API callback function that sets the cookie with the serialized JSON answer
-  this.setGeoCookie = function(answer) {
-    if (answer['statusCode'] == 'OK') {
-      JSONString = JSON.stringify(answer);
-      setCookie('geolocation', JSONString, 365);
-      geodata = answer;
-      callbackFunc();
-    }
-  }
- 
-  //Return a geolocation field
-  this.getField = function(field) {
-    try {
-      return geodata[field];
-    } catch(err) {}
-  }
- 
-  //Request to IPInfoDB
-  function getGeolocation() {
-    try {
-      script = document.createElement('script');
-      script.src = url;
-      document.body.appendChild(script);
-    } catch(err) {}
-  }
- 
-  //Set the cookie
-  function setCookie(c_name, value, expire) {
-    var exdate=new Date();
-    exdate.setDate(exdate.getDate()+expire);
-    document.cookie = c_name+ "=" +escape(value) + ((expire==null) ? "" : ";expires="+exdate.toGMTString());
-  }
- 
-  //Get the cookie content
-  function getCookie(c_name) {
-    if (document.cookie.length > 0 ) {
-      c_start=document.cookie.indexOf(c_name + "=");
-      if (c_start != -1){
-        c_start=c_start + c_name.length+1;
-        c_end=document.cookie.indexOf(";",c_start);
-        if (c_end == -1) {
-          c_end=document.cookie.length;
-        }
-        return unescape(document.cookie.substring(c_start,c_end));
-      }
-    }
-    return '';
-  }
+	  #overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    filter:alpha(opacity=50);
+    -moz-opacity:0.5;
+    -khtml-opacity: 0.5;
+    opacity: 0.5;
+    z-index: 10000;
 }
-</script>
+    </style>
+    
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVIv0OBgDPfJ2bN5GqE13HaA7u1d4j3_o&sensor=true"></script>
-    
+<script src="jquery.js"></script>   
 <script>
+	function overlaystop() {
+		var overlay = document.getElementById('overlay');
+		overlay.style.visibility = 'hidden';
+	}
 	var geocoder;
 	var map;
 	var markerlist = [];
@@ -146,6 +64,7 @@ function geolocate(timezone, cityPrecision, objectVar) {
 		}
 	}
 	function codeAddress() {
+		
 		var address = document.getElementById('address').value;
 		var info = document.getElementById('info').value;
 		geocoder.geocode( { 'address': address}, function(results, status) {
@@ -159,6 +78,7 @@ function geolocate(timezone, cityPrecision, objectVar) {
 				markerlist[u][2].open(map,markerlist[u][0]);
 			});
 			displayAddressList();
+			overlaystop();
 		} else {
 			alert('Geocode was not successful for the following reason: ' + status);
 		}
@@ -167,15 +87,18 @@ function geolocate(timezone, cityPrecision, objectVar) {
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
-
+	function overlaystart() {
+		var overlay = jQuery('<div id="overlay"><input id="address" onfocus="if(this.value == "Enter address here") { this.value = ""; }" type="textbox" value="Enter address here"> <input id="info" onfocus="if(this.value == "Enter info here") { this.value = ""; }" type="textbox" value="Enter info here"><input type="button" value="Display" onclick="codeAddress()"></div>');
+		overlay.appendTo(document.body)
+	}
+	
     </script>
   </head>
   <body>
     <div id="panel">
-      <input id="address" onfocus="if(this.value == 'Enter address here') { this.value = ''; }" type="textbox" value="Enter address here">
-	  <input id="info" onfocus="if(this.value == 'Enter info here') { this.value = ''; }" type="textbox" value="Enter info here">
-      <input type="button" value="Display" onclick="codeAddress()">
-    </div>
+      
+		<input type="button" value="Submit" onclick="overlaystart()">
+	</div>
     <div id="map-canvas"></div>
   </body>
 </html>
