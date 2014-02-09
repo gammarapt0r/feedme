@@ -21,7 +21,8 @@
         border: 1px solid #999;
       }
 	  #overlay {
-    position: fixed;
+    visibility: visible;
+	position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -41,7 +42,9 @@
 <script>
 	function overlaystop() {
 		var overlay = document.getElementById('overlay');
+		
 		overlay.style.visibility = 'hidden';
+		
 	}
 	var geocoder;
 	var map;
@@ -78,11 +81,11 @@
 				markerlist[u][2].open(map,markerlist[u][0]);
 			});
 			displayAddressList();
-			overlaystop();
+			
 		} else {
 			alert('Geocode was not successful for the following reason: ' + status);
 		}
-	
+		overlaystop();
   });
 }
 
