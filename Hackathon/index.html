@@ -5,22 +5,31 @@
 	<style type = "text/css">
 		body {background-image:url("bg.jpg");}
 		
-		
-		#logo {position:absolute;top:10px;left:10px;}
+		<!--#pix {position:absolute;left:1350px;height:700px;width:1px;border:dashed black 3px;}-->
+		#logo {position:absolute;top:10px;left:255px;}
 		#topbanner {position:absolute;top:100px;left:500px;background-color:red;width:500px;height:50;}
 		#topbannerborder {position:absolute;top:102px;left:502px;background-color:red;}
+		#navbar {position:absolute;left:0px;top:200px;}
+		#aboutdiv {position:absolute;top:200px;left:466px;}
+		#homediv {position:absolute;top:200px;left:327px;}
+		#addadealdiv {position:absolute;top:200px;left:605px;}
+		#changelocationdiv {position:absolute;top:200px;left:755px;}
+		#contactsdiv {position:absolute;top:200px;left:894px;}
 		
-		#scrollback {position:absolute;top:250px;left:20px;height:350px;width:750px;border:blue solid 2px;}
-		#imgcenter {position:absolute;top:275px;left:320px;border:1px grey solid}
-		#imgr1 {position:absolute;top:286px;left:480px;border:1px grey solid}
-		#imgl1 {position:absolute;top:286px;left:175px;border:1px grey solid}
-		#imgr2 {position:absolute;top:306px;left:625px;border:1px grey solid}
-		#imgl2 {position:absolute;top:306px;left:57px;border:1px grey solid}
-		#rarr {position:absolute;top:540px;left:410px;}
-		#larr {position:absolute;top:540px;left:340px;}
+		#scrollback {position:absolute;top:250px;left:85px;height:600px;width:670px;border:grey solid 2px;background-color:white;}
+		#imgcenter {position:absolute;top:275px;left:345px;border:1px grey solid}
+		#imgr1 {position:absolute;top:286px;left:465px;border:1px grey solid}
+		#imgl1 {position:absolute;top:286px;left:240px;border:1px grey solid}
+		#imgr2 {position:absolute;top:306px;left:570px;border:1px grey solid}
+		#imgl2 {position:absolute;top:306px;left:162px;border:1px grey solid}
+		#rarr {position:absolute;top:540px;left:435px;}
+		#larr {position:absolute;top:540px;left:365px;}
 		
+		#text1 {position:absolute;top:570px;left:125px;height:245px;width:580px;}
+		h1 {font-family:"Vernanda",Arial,sans-serif;}
+		p {text-indent:50px;font-family:"Vernanda",Arial,sans-serif;}
 		
-		#mapdiv {position:absolute;top:250px;left:820px;border:green dashed 2px;height:450px;width:500px;}
+		#mapdiv {position:absolute;top:250px;left:780px;border:green dashed 2px;height:450px;width:500px;}
 		
 	</style>
 
@@ -146,19 +155,77 @@
 				newstr="<img src='"+images[index]+".png' height='158' width='108'/>";
 				temp.innerHTML=newstr;
 		}
-		
+		function aboutdarken(){
+			var temp = document.getElementById('aboutdiv');
+			temp.innerHTML="<img src='aboutdark.png' height='30'/>";
+		}
+		function aboutlighten(){
+			var temp = document.getElementById('aboutdiv');
+			temp.innerHTML="<img src='aboutfull.png' height='30'/>";
+		}
+		function homedarken(){
+			var temp = document.getElementById('homediv');
+			temp.innerHTML="<img src='homedark.png' height='30'/>";
+		}
+		function homelighten(){
+			var temp = document.getElementById('homediv');
+			temp.innerHTML="<img src='homefull.png' height='30'/>";
+		}function addadealdarken(){
+			var temp = document.getElementById('addadealdiv');
+			temp.innerHTML="<img src='addadealdark.png' height='30'/>";
+		}
+		function addadeallighten(){
+			var temp = document.getElementById('addadealdiv');
+			temp.innerHTML="<img src='addadealfull.png' height='30'/>";
+		}
+		function changelocationdarken(){
+			var temp = document.getElementById('changelocationdiv');
+			temp.innerHTML="<img src='changelocationdark.png' height='30'/>";
+		}
+		function changelocationlighten(){
+			var temp = document.getElementById('changelocationdiv');
+			temp.innerHTML="<img src='changelocationfull.png' height='30'/>";
+		}
+		function contactsdarken(){
+			var temp = document.getElementById('contactsdiv');
+			temp.innerHTML="<img src='contactsdark.png' height='30'/>";
+		}
+		function contactslighten(){
+			var temp = document.getElementById('contactsdiv');
+			temp.innerHTML="<img src='contactsfull.png' height='30'/>";
+		}
 	</script>
 	
+	<!--<div id="pix"></div>-->
 	<div id="topbanner"></div>
-	<div id="logo"><img src="logo.png" height="175"/></div>
+
+	<div id="logo"><img src="logo.png" height="180"/></div>
+	<div id="navbar"><img src="navbar.png" height="30" width="1500"/></div>
+	<div id="aboutdiv" onMouseOver="aboutdarken()" onMouseOut="aboutlighten()"><img src='aboutfull.png' height='30'/></div>
+	<div id="homediv" onMouseOver="homedarken()" onMouseOut="homelighten()"><img src='homefull.png' height='30'/></div>
+	<div id="addadealdiv" onMouseOver="addadealdarken()" onMouseOut="addadeallighten()"><img src='addadealfull.png' height='30'/></div>
+	<div id="changelocationdiv" onMouseOver="changelocationdarken()" onMouseOut="changelocationlighten()"><img src='changelocationfull.png' height='30'/></div>
+	<div id="contactsdiv" onMouseOver="contactsdarken()" onMouseOut="contactslighten()"><img src='contactsfull.png' height='30'/></div>
 	
 	<div id="mapdiv"></div>
 	<div id="scrollback"></div>
-	<div id="imgcenter"><img src="img0.png" height="220" width="150"/></div>
-	<div id="imgr1"><img src="img1.png" height="198" width="135"/></div>
-	<div id="imgl1"><img src="img-1.png" height="198" width="135"/></div>
 	<div id="imgr2"><img src="img2.png" height="158" width="108"/></div>
 	<div id="imgl2"><img src="img-2.png" height="158" width="108"/></div>
+	<div id="imgr1"><img src="img1.png" height="198" width="135"/></div>
+	<div id="imgl1"><img src="img-1.png" height="198" width="135"/></div>
+	<div id="imgcenter"><img src="img0.png" height="220" width="150"/></div>
+	<div id="text1">
+		<h1>Title blah blah</h1>
+		<p>text text text text text text text text text text text text text text text text text text text text 
+		text text text text text text text text text text text text text text text text text text text text text 
+		text text text text text text text text text text text text text text text text text text text text text 
+		text text text text text text text text text text text text text text text text text text text text 
+		text text text text text text text text text text text text text text text text text text text text text 
+		text text text text text text text text text text text text text text text text text text text text text 
+		text text text text text text text text text text text text text text text text text text text text</p>
+	
+	</div>
+	
 	
 	<div id="rarr" onclick="switchRight()"><img src="rightarr.png" height="30" width="40" onClick=""></div>
 	<div id="larr" onclick="switchLeft()"><img src="leftarr.png" height="30" width="40" onClick=""></div>
