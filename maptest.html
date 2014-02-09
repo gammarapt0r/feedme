@@ -54,18 +54,20 @@
 		var latlng = new google.maps.LatLng(53.5333, -113.5000);
 		var mapOptions = {zoom: 11, center: latlng}
 		map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-		for (i = 0; i < addressLoad.length; i++) {  
-			
-			markerlist.push([(new google.maps.Marker({map: map, position: new google.maps.LatLng(addressLoad[i][0],addressLoad[i][1]), title: addressLoad[i][2]})),addressLoad[i][2],new google.maps.InfoWindow({content: addressLoad[i][2]})]);
-			var u = markerlist.length-1;
-			alert(markerlist[i][1]);
-			google.maps.event.addListener(markerlist[u][0], 'click', 
-			function() {
-				alert(markerlist[u][1]);
-				markerlist[u][2].open(map,markerlist[u][0]);
-			});
-			
-		}
+		<!--for (i = 0; i < addressLoad.length; i++) {  
+		//	
+		//	markerlist.push([(new google.maps.Marker({map: map, position: new google.maps.LatLng(addressLoad[i][0],addressLoad[i][1]), title: addressLoad[i][2]})),addressLoad[i][2],new google.maps.InfoWindow({content: addressLoad[i][2]})]);
+		//	var u = markerlist.length-1;
+		//	alert(markerlist[i][1]);
+		//	google.maps.event.addListener(markerlist[u][0], 'click', 
+		//	function() {
+		//		alert(markerlist[u][1]);
+		//		markerlist[u][2].open(map,markerlist[u][0]);
+		//	});
+		//	
+		//}
+		-->
+		
 		//for (u = 0; u < markerlist.length; u++) {  
 		//	alert(u);
 		//	google.maps.event.addListener(markerlist[u][0], 'click', 
@@ -74,14 +76,14 @@
 		//		markerlist[u][2].open(map,markerlist[u][0]);
 		//	});
 		//}
-		displayAddressList()
+		//displayAddressList()
 		
 	}
 	function displayAddressList() {
 		 for (i = 0; i < markerlist.length; i++) {  
 			
 			markerlist[i][0].setMap(map);
-			alert(markerlist[i][0].getPosition());
+			//alert(markerlist[i][0].getPosition());
 			
 			
 			
@@ -98,7 +100,7 @@
 			var u = markerlist.length-1;
 			google.maps.event.addListener(markerlist[u][0], 'click', 
 			function() {
-				alert(info);
+				//alert(info);
 				markerlist[u][2].open(map,markerlist[u][0]);
 			});
 			displayAddressList();
