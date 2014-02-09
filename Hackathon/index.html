@@ -1,25 +1,26 @@
-<!doctype html>
+<!DOCTYPE html>
 
 <html>
 <head>
 	<style type = "text/css">
-		body {background-color:orange;}
+		body {background-image:url("bg.jpg");}
 		
 		
 		#logo {position:absolute;top:10px;left:10px;}
-		#topbanner {position:absolute;top:0px;left:0px;}
+		#topbanner {position:absolute;top:100px;left:500px;background-color:red;width:500px;height:50;}
+		#topbannerborder {position:absolute;top:102px;left:502px;background-color:red;}
 		
-		#scrollback {position:absolute;top:200px;left:20px;height:350px;width:750px;border:blue solid 2px;}
-		#imgcenter {position:absolute;top:225px;left:320px;border:1px grey solid}
-		#imgr1 {position:absolute;top:236px;left:480px;border:1px grey solid}
-		#imgl1 {position:absolute;top:236px;left:175px;border:1px grey solid}
-		#imgr2 {position:absolute;top:256px;left:625px;border:1px grey solid}
-		#imgl2 {position:absolute;top:256px;left:57px;border:1px grey solid}
-		#rarr {position:absolute;top:490px;left:410px;}
-		#larr {position:absolute;top:490px;left:340px;}
+		#scrollback {position:absolute;top:250px;left:20px;height:350px;width:750px;border:blue solid 2px;}
+		#imgcenter {position:absolute;top:275px;left:320px;border:1px grey solid}
+		#imgr1 {position:absolute;top:286px;left:480px;border:1px grey solid}
+		#imgl1 {position:absolute;top:286px;left:175px;border:1px grey solid}
+		#imgr2 {position:absolute;top:306px;left:625px;border:1px grey solid}
+		#imgl2 {position:absolute;top:306px;left:57px;border:1px grey solid}
+		#rarr {position:absolute;top:540px;left:410px;}
+		#larr {position:absolute;top:540px;left:340px;}
 		
 		
-		#mapdiv {position:absolute;top:200px;left:820px;border:green dashed 2px;height:450px;width:500px;}
+		#mapdiv {position:absolute;top:250px;left:820px;border:green dashed 2px;height:450px;width:500px;}
 		
 	</style>
 
@@ -27,7 +28,128 @@
 </head>
 <body>
 	
-	<div id="topbanner"><img src="topbanner.png" alt="topbanner" width="370%"/></div>
+	<script>
+		var images = new Array("img-2","img-1","img0","img1","img2");
+		var index=0;var newstr="";
+		
+		function switchRight(){
+			//CENTER
+			var temp=document.getElementById('imgcenter');
+				if (temp.innerHTML.indexOf("img-2")>-1){index=0}
+				else if (temp.innerHTML.indexOf("img-1")>-1){index=1}
+				else if (temp.innerHTML.indexOf("img0")>-1){index=2}
+				else if (temp.innerHTML.indexOf("img1")>-1){index=3}
+				else {index=4}
+				index = index+1;
+				if(index==5){index=0}
+				newstr="<img src='"+images[index]+".png' height='220' width='150'/>";
+				temp.innerHTML=newstr;
+			//RIGHT ONE
+			var temp=document.getElementById('imgr1');
+				if (temp.innerHTML.indexOf("img-2")>-1){index=0}
+				else if (temp.innerHTML.indexOf("img-1")>-1){index=1}
+				else if (temp.innerHTML.indexOf("img0")>-1){index=2}
+				else if (temp.innerHTML.indexOf("img1")>-1){index=3}
+				else {index=4}
+				index = index+1;
+				if(index==5){index=0}
+				newstr="<img src='"+images[index]+".png' height='198' width='135'/>";
+				temp.innerHTML=newstr;
+			//LEFT ONE
+			var temp=document.getElementById('imgl1');
+				if (temp.innerHTML.indexOf("img-2")>-1){index=0}
+				else if (temp.innerHTML.indexOf("img-1")>-1){index=1}
+				else if (temp.innerHTML.indexOf("img0")>-1){index=2}
+				else if (temp.innerHTML.indexOf("img1")>-1){index=3}
+				else {index=4}
+				index = index+1;
+				if(index==5){index=0}
+				newstr="<img src='"+images[index]+".png' height='198' width='135'/>";
+				temp.innerHTML=newstr;
+			//RIGHT TWO
+			var temp=document.getElementById('imgr2');
+				if (temp.innerHTML.indexOf("img-2")>-1){index=0}
+				else if (temp.innerHTML.indexOf("img-1")>-1){index=1}
+				else if (temp.innerHTML.indexOf("img0")>-1){index=2}
+				else if (temp.innerHTML.indexOf("img1")>-1){index=3}
+				else {index=4}
+				index = index+1;
+				if(index==5){index=0}
+				newstr="<img src='"+images[index]+".png' height='158' width='108'/>";
+				temp.innerHTML=newstr;
+			//LEFT TWO
+			var temp=document.getElementById('imgl2');
+				if (temp.innerHTML.indexOf("img-2")>-1){index=0}
+				else if (temp.innerHTML.indexOf("img-1")>-1){index=1}
+				else if (temp.innerHTML.indexOf("img0")>-1){index=2}
+				else if (temp.innerHTML.indexOf("img1")>-1){index=3}
+				else {index=4}
+				index = index+1;
+				if(index==5){index=0}
+				newstr="<img src='"+images[index]+".png' height='158' width='108'/>";
+				temp.innerHTML=newstr;
+		}
+		function switchLeft(){
+						//CENTER
+			var temp=document.getElementById('imgcenter');
+				if (temp.innerHTML.indexOf("img-2")>-1){index=0}
+				else if (temp.innerHTML.indexOf("img-1")>-1){index=1}
+				else if (temp.innerHTML.indexOf("img0")>-1){index=2}
+				else if (temp.innerHTML.indexOf("img1")>-1){index=3}
+				else {index=4}
+				index = index-1;
+				if(index==-1){index=4}
+				newstr="<img src='"+images[index]+".png' height='220' width='150'/>";
+				temp.innerHTML=newstr;
+			//RIGHT ONE
+			var temp=document.getElementById('imgr1');
+				if (temp.innerHTML.indexOf("img-2")>-1){index=0}
+				else if (temp.innerHTML.indexOf("img-1")>-1){index=1}
+				else if (temp.innerHTML.indexOf("img0")>-1){index=2}
+				else if (temp.innerHTML.indexOf("img1")>-1){index=3}
+				else {index=4}
+				index = index-1;
+				if(index==-1){index=4}
+				newstr="<img src='"+images[index]+".png' height='198' width='135'/>";
+				temp.innerHTML=newstr;
+			//LEFT ONE
+			var temp=document.getElementById('imgl1');
+				if (temp.innerHTML.indexOf("img-2")>-1){index=0}
+				else if (temp.innerHTML.indexOf("img-1")>-1){index=1}
+				else if (temp.innerHTML.indexOf("img0")>-1){index=2}
+				else if (temp.innerHTML.indexOf("img1")>-1){index=3}
+				else {index=4}
+				index = index-1;
+				if(index==-1){index=4}
+				newstr="<img src='"+images[index]+".png' height='198' width='135'/>";
+				temp.innerHTML=newstr;
+			//RIGHT TWO
+			var temp=document.getElementById('imgr2');
+				if (temp.innerHTML.indexOf("img-2")>-1){index=0}
+				else if (temp.innerHTML.indexOf("img-1")>-1){index=1}
+				else if (temp.innerHTML.indexOf("img0")>-1){index=2}
+				else if (temp.innerHTML.indexOf("img1")>-1){index=3}
+				else {index=4}
+				index = index-1;
+				if(index==-1){index=4}
+				newstr="<img src='"+images[index]+".png' height='158' width='108'/>";
+				temp.innerHTML=newstr;
+			//LEFT TWO
+			var temp=document.getElementById('imgl2');
+				if (temp.innerHTML.indexOf("img-2")>-1){index=0}
+				else if (temp.innerHTML.indexOf("img-1")>-1){index=1}
+				else if (temp.innerHTML.indexOf("img0")>-1){index=2}
+				else if (temp.innerHTML.indexOf("img1")>-1){index=3}
+				else {index=4}
+				index = index-1;
+				if(index==-1){index=4}
+				newstr="<img src='"+images[index]+".png' height='158' width='108'/>";
+				temp.innerHTML=newstr;
+		}
+		
+	</script>
+	
+	<div id="topbanner"></div>
 	<div id="logo"><img src="logo.png" height="175"/></div>
 	
 	<div id="mapdiv"></div>
@@ -38,8 +160,9 @@
 	<div id="imgr2"><img src="img2.png" height="158" width="108"/></div>
 	<div id="imgl2"><img src="img-2.png" height="158" width="108"/></div>
 	
-	<div id="rarr"><img src="plainwhite.jpg" height="30" width="40" onClick=""></div>
-	<div id="larr"><img src="plainwhite.jpg" height="30" width="40" onClick=""></div>
-
+	<div id="rarr" onclick="switchRight()"><img src="rightarr.png" height="30" width="40" onClick=""></div>
+	<div id="larr" onclick="switchLeft()"><img src="leftarr.png" height="30" width="40" onClick=""></div>
+	
+	
 </body>
 </html>
